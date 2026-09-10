@@ -1,7 +1,5 @@
 import QtQuick
 
-// Shared state for the bar widget and the lazy full panel.
-// PR 2: fixture chrome only. No network, no playback helper.
 Item {
   id: root
 
@@ -40,6 +38,8 @@ Item {
   property string artist: ""
   property bool playing: false
   property bool hasMedia: title !== ""
+  property string storefront: "us"
+  property var detailItem: null
 
   readonly property string shortcutPlayer: String(setting("shortcutPlayer", "Omarchy Music app"))
   readonly property string playbackHost: String(setting("playbackHost", "chromium-apple-origin"))
@@ -47,6 +47,8 @@ Item {
     Math.floor(Number(setting("idleShutdownMinutes", 15)) || 0)))
   readonly property bool showMiniPlayer: String(setting("showMiniPlayer", "On")) !== "Off"
   readonly property bool otherApplePlugins: detectOtherApplePlugins()
+  readonly property var auth: authManager
+  readonly property var api: musicApi
 
   function setting(name, fallback) {
     if (settings && settings[name] !== undefined && settings[name] !== null)
@@ -70,4 +72,17 @@ Item {
   function chooseTab(tab) {
     currentTab = String(tab || "listen")
   }
+
+  AuthManager {
+    id: authManager
+    pluginDir: root.pluginDir
+  }
+
+  AppleMusicApi {
+    id: musicApi
+    auth: authManager
+  }
+
+  onPluginDirChanged: if (pluginDir) authManager.restore()
+  Component.onCompleted: if (pluginDir) authManager.restore()
 }
