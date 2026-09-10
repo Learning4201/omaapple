@@ -27,7 +27,11 @@ Item {
   function open(payload) {
     closingFromHost = false
     opened = true
-    var tab = payload && payload.tab ? String(payload.tab) : ""
+    var data = payload
+    if (typeof payload === "string" && payload) {
+      try { data = JSON.parse(payload) } catch (e) { data = {} }
+    }
+    var tab = data && data.tab ? String(data.tab) : ""
     if (tab) chooseTab(tab)
     Qt.callLater(function() {
       if (focusScope) focusScope.forceActiveFocus()
@@ -190,9 +194,22 @@ Item {
               anchors.fill: parent
               anchors.margins: Style.space(16)
               visible: root.currentTab === "search"
+              service: root.service
               foreground: root.foreground
               muted: root.muted
               onNowPlayingRequested: root.chooseTab("nowplaying")
+              onDetailRequested: function(item) {
+                if (root.service) root.service.detailItem = item
+                root.chooseTab("detail")
+              }
+            }
+            DetailPage {
+              anchors.fill: parent
+              anchors.margins: Style.space(16)
+              visible: root.currentTab === "detail"
+              item: root.service ? root.service.detailItem : ({})
+              foreground: root.foreground
+              muted: root.muted
             }
             QueuePage {
               anchors.fill: parent

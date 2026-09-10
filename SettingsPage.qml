@@ -50,9 +50,16 @@ Item {
       }
     }
 
+    LoginPage {
+      width: parent.width
+      auth: root.service ? root.service.auth : null
+      foreground: root.foreground
+      muted: root.muted
+      urgent: root.urgent
+    }
+
     Repeater {
       model: [
-        { label: "MusicKit key", value: "Import .p8 / paste PEM (later PR)" },
         { label: "Reconnect", value: "Authorize again (later PR)" },
         { label: "Keyboard shortcut opens", value: root.service ? String(root.service.shortcutPlayer) : "Omarchy Music app" },
         { label: "Playback origin", value: root.service ? String(root.service.playbackHost) : "chromium-apple-origin" },

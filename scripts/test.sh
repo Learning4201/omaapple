@@ -100,6 +100,17 @@ fail_if_matches "wrapper Chromium ExecStart" \
 
 fail_if_matches "JWT on argv" \
   --glob '*.qml' --glob '*.js' --glob '*.sh' --glob '*.py' \
+  --glob '!tests/**' \
   -e 'eyJ'
+
+python3 "$source_root/tests/test_sign_token.py"
+
+QMLTEST=/usr/lib/qt6/bin/qmltestrunner
+if [[ -x $QMLTEST ]]; then
+  QT_QPA_PLATFORM=offscreen "$QMLTEST" \
+    -input "$source_root/tests/tst_api.qml" \
+    -import "$source_root" \
+    -o -,txt
+fi
 
 echo "All validation and tests passed."
