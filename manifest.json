@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "id": "io.github.Learning4201.omaapple",
+  "name": "OmaApple",
+  "version": "0.1.0",
+  "author": "OmaApple contributors",
+  "license": "MIT",
+  "description": "Apple Music in Quickshell — native Omarchy UI, official Apple APIs, hidden MusicKit JS playback.",
+  "kinds": ["service", "bar-widget", "panel"],
+  "activation": "on-demand",
+  "entryPoints": {
+    "service": "Service.qml",
+    "barWidget": "BarWidget.qml",
+    "panel": "Panel.qml"
+  },
+  "barWidget": {
+    "displayName": "OmaApple",
+    "description": "Native Apple Music UI for Omarchy, with official MusicKit JS playback.",
+    "category": "Media",
+    "aliases": ["apple-music", "music", "player"],
+    "allowMultiple": false,
+    "defaultSection": "left",
+    "defaults": {
+      "idleShutdownMinutes": 15,
+      "showMiniPlayer": "On",
+      "shortcutPlayer": "Omarchy Music app",
+      "shortcutHints": "On",
+      "showTrackTitle": "On",
+      "showArtistName": "Off",
+      "showPausedTrack": "On",
+      "scrollBarText": "Off",
+      "scrollSpeed": "1",
+      "maxBarTextWidth": "240",
+      "playbackHost": "chromium-apple-origin"
+    },
+    "schema": [
+      {
+        "key": "idleShutdownMinutes",
+        "type": "integer",
+        "label": "Sleep empty local player",
+        "min": 0,
+        "max": 1440,
+        "step": 5,
+        "defaultValue": 15,
+        "description": "Minutes after every player surface closes when nothing is playing. Paused media stays available to resume. Use 0 to keep the helper running."
+      },
+      {
+        "key": "showMiniPlayer",
+        "type": "enum",
+        "label": "Open mini-player from bar",
+        "options": ["On", "Off"],
+        "defaultValue": "On",
+        "description": "When off, clicking the bar icon opens the full player directly."
+      },
+      {
+        "key": "shortcutPlayer",
+        "type": "enum",
+        "label": "Keyboard shortcut opens",
+        "options": ["Omarchy Music app", "Full player", "Mini player"],
+        "defaultValue": "Omarchy Music app",
+        "description": "Choose whether Super+Shift+M launches Omarchy's Music app, the full player, or the mini-player. The plugin never writes Hyprland config; Settings shows the bind snippet."
+      },
+      {
+        "key": "shortcutHints",
+        "type": "enum",
+        "label": "Shortcut hints",
+        "options": ["On", "Off"],
+        "defaultValue": "On"
+      },
+      {
+        "key": "showTrackTitle",
+        "type": "enum",
+        "label": "Show track title in bar",
+        "options": ["On", "Off"],
+        "defaultValue": "On"
+      },
+      {
+        "key": "showArtistName",
+        "type": "enum",
+        "label": "Show artist name in bar",
+        "options": ["On", "Off"],
+        "defaultValue": "Off"
+      },
+      {
+        "key": "showPausedTrack",
+        "type": "enum",
+        "label": "Show paused track in bar",
+        "options": ["On", "Off"],
+        "defaultValue": "On"
+      },
+      {
+        "key": "scrollBarText",
+        "type": "enum",
+        "label": "Scroll long bar text",
+        "options": ["On", "Off"],
+        "defaultValue": "Off"
+      },
+      {
+        "key": "scrollSpeed",
+        "type": "string",
+        "label": "Bar text scroll speed",
+        "defaultValue": "1",
+        "description": "Multiplier from 0.25 to 3.00. The default speed is 1."
+      },
+      {
+        "key": "maxBarTextWidth",
+        "type": "string",
+        "label": "Maximum bar text width",
+        "defaultValue": "240",
+        "description": "Width from 160 to 560 px. Use 0 for unlimited."
+      },
+      {
+        "key": "playbackHost",
+        "type": "enum",
+        "label": "Playback origin",
+        "options": ["chromium-apple-origin", "loopback-experiment", "castlabs"],
+        "defaultValue": "chromium-apple-origin",
+        "description": "v1 default is stock Chromium on Apple origin. Loopback is an experiment. CastLabs is an optional user-installed escape hatch (Settings can switch; we do not vendor CastLabs Electron)."
+      }
+    ]
+  }
+}
