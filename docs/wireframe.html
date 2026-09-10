@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OmaApple v1 wireframe</title>
+  <style>
+    :root {
+      --bg: #101315;
+      --fg: #cacccc;
+      --muted: #707880;
+      --urgent: #a55555;
+      --line: #3a4044;
+      --panel: #161a1c;
+      --bar: #0c0e10;
+      --note: #c4a35a;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      background: #0a0c0d;
+      color: var(--fg);
+      font: 14px/1.4 "IBM Plex Sans", "Noto Sans", ui-sans-serif, system-ui, sans-serif;
+    }
+    body { padding: 32px 40px 64px; }
+    h1 { font-size: 22px; font-weight: 600; margin: 0 0 6px; letter-spacing: 0.02em; }
+    .lede { color: var(--muted); max-width: 72ch; margin: 0 0 28px; }
+    .lede strong { color: var(--fg); font-weight: 600; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+    figure {
+      margin: 0;
+      border: 1px solid var(--line);
+      background: #0e1012;
+    }
+    figcaption {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--note);
+      padding: 10px 12px 8px;
+      border-bottom: 1px dashed var(--line);
+    }
+    figcaption span { color: var(--muted); text-transform: none; letter-spacing: 0; margin-left: 8px; }
+    .desktop {
+      background: var(--bg);
+      min-height: 420px;
+      position: relative;
+    }
+    .bar {
+      height: 36px;
+      background: var(--bar);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      gap: 10px;
+      font-size: 12px;
+    }
+    .bar .left, .bar .right { display: flex; align-items: center; gap: 10px; }
+    .bar .right { margin-left: auto; color: var(--muted); }
+    .pill {
+      border: 1px solid var(--fg);
+      padding: 2px 8px;
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pill.active { background: var(--fg); color: var(--bg); }
+    .dot { width: 7px; height: 7px; border: 1px solid currentColor; border-radius: 1px; }
+    .workspace { height: 384px; position: relative; }
+    .callout {
+      position: absolute;
+      font-size: 11px;
+      color: var(--note);
+      letter-spacing: 0.04em;
+    }
+    .callout::before {
+      content: "";
+      display: block;
+      border-top: 1px dashed var(--note);
+      margin-bottom: 4px;
+    }
+    .player {
+      display: grid;
+      grid-template-columns: 148px 1fr;
+      grid-template-rows: 1fr 72px;
+      height: 384px;
+      background: var(--panel);
+    }
+    .side {
+      grid-row: 1;
+      border-right: 1px solid var(--line);
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .nav {
+      padding: 7px 10px;
+      color: var(--muted);
+      border: 1px solid transparent;
+    }
+    .nav.on {
+      color: var(--fg);
+      border-color: var(--fg);
+    }
+    .body { padding: 16px 18px; overflow: hidden; }
+    .kicker { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+    .title { font-size: 20px; margin: 0 0 14px; font-weight: 600; }
+    .row {
+      display: grid;
+      grid-template-columns: 36px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .art {
+      width: 36px; height: 36px;
+      border: 1px solid var(--fg);
+    }
+    .art.lg { width: 52px; height: 52px; }
+    .meta { font-size: 13px; }
+    .meta small { display: block; color: var(--muted); font-size: 12px; }
+    .time { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+    .transport {
+      grid-column: 1 / -1;
+      border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 52px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 14px;
+    }
+    .controls { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 13px; }
+    .controls .play {
+      width: 28px; height: 28px;
+      border: 1px solid var(--fg);
+      color: var(--fg);
+      display: grid; place-items: center;
+    }
+    .scrub { height: 2px; background: var(--line); position: relative; margin: 6px 0; }
+    .scrub i {
+      position: absolute; left: 0; top: -3px; width: 38%; height: 8px;
+      border-right: 2px solid var(--fg);
+    }
+    .cta {
+      border: 1px dashed var(--fg);
+      padding: 22px;
+      margin-top: 24px;
+      max-width: 360px;
+    }
+    .cta p { margin: 0 0 12px; color: var(--muted); }
+    .btn { display: inline-block; border: 1px solid var(--fg); padding: 6px 12px; }
+    .mini {
+      position: absolute;
+      top: 44px; left: 12px;
+      width: 280px;
+      background: var(--panel);
+      border: 1px solid var(--fg);
+      padding: 12px;
+    }
+    .mini .head { display: flex; gap: 10px; margin-bottom: 12px; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+    .tab { border: 1px solid var(--line); color: var(--muted); padding: 3px 8px; font-size: 12px; }
+    .tab.on { border-color: var(--fg); color: var(--fg); }
+    .field { border: 1px solid var(--line); padding: 6px 8px; color: var(--muted); margin-bottom: 14px; }
+    .warn {
+      border: 1px dashed var(--urgent);
+      color: var(--urgent);
+      padding: 8px 10px;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+    .setting { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+    .setting b { font-weight: 500; }
+    .now {
+      height: 384px;
+      display: grid;
+      place-items: center;
+      background: var(--panel);
+    }
+    .now .card { text-align: center; }
+    .now .cover {
+      width: 180px; height: 180px;
+      border: 1px solid var(--fg);
+      margin: 0 auto 16px;
+    }
+    .keys { margin-top: 28px; color: var(--muted); font-size: 13px; max-width: 90ch; }
+    .keys code { color: var(--fg); }
+  </style>
+</head>
+<body>
+  <h1>OmaApple v1 wireframe</h1>
+  <p class="lede">
+    Low-fidelity layout for the native Quickshell UI. Boxes are structure, not final chrome.
+    Product UI lives in the Omarchy bar and a panel — <strong>not</strong> inside Apple’s website.
+    Playback is a hidden Chromium MusicKit engine the user never browses.
+  </p>
+
+  <div class="grid">
+    <figure>
+      <figcaption>1. Bar + mini-player <span>left-click the icon · default section: left</span></figcaption>
+      <div class="desktop">
+        <div class="bar">
+          <div class="left">
+            <span class="pill active"><span class="dot"></span> music note</span>
+            <span class="pill">workspaces</span>
+          </div>
+          <div class="right">clock · tray</div>
+        </div>
+        <div class="workspace">
+          <div class="mini">
+            <div class="head">
+              <div class="art lg"></div>
+              <div class="meta">Track title<small>Artist · Album</small></div>
+            </div>
+            <div class="scrub"><i></i></div>
+            <div class="controls">
+              <span>prev</span>
+              <span class="play">play</span>
+              <span>next</span>
+              <span>shuffle</span>
+              <span>repeat</span>
+            </div>
+          </div>
+          <div class="callout" style="left:300px;top:52px;width:160px;">popover anchored to the bar icon, not a browser window</div>
+        </div>
+      </div>
+    </figure>
+
+    <figure>
+      <figcaption>2. Full player — Listen Now <span>after Apple ID authorize</span></figcaption>
+      <div class="player">
+        <div class="side">
+          <div class="nav on">Listen Now</div>
+          <div class="nav">Library</div>
+          <div class="nav">Search</div>
+          <div class="nav">Queue</div>
+          <div class="nav">Settings</div>
+        </div>
+        <div class="body">
+          <div class="kicker">Listen Now</div>
+          <p class="title">Recently played</p>
+          <div class="tabs">
+            <span class="tab on">Played</span>
+            <span class="tab">Added</span>
+          </div>
+          <div class="row"><div class="art"></div><div class="meta">Song one<small>Artist</small></div><div class="time">3:12</div></div>
+          <div class="row"><div class="art"></div><div class="meta">Song two<small>Artist</small></div><div class="time">4:01</div></div>
+          <div class="row"><div class="art"></div><div class="meta">Song three<small>Artist</small></div><div class="time">2:48</div></div>
+        </div>
+        <div class="transport">
+          <div class="art"></div>
+          <div>
+            <div class="meta">Now playing<small>Artist</small></div>
+            <div class="scrub"><i></i></div>
+          </div>
+          <div class="controls">
+            <span>shuf</span>
+            <span>prev</span>
+            <span class="play">play</span>
+            <span>next</span>
+            <span>rep</span>
+          </div>
+        </div>
+      </div>
+    </figure>
+
+    <figure>
+      <figcaption>3. Library — gated <span>until Music User Token exists</span></figcaption>
+      <div class="player">
+        <div class="side">
+          <div class="nav">Listen Now</div>
+          <div class="nav on">Library</div>
+          <div class="nav">Search</div>
+          <div class="nav">Queue</div>
+          <div class="nav">Settings</div>
+        </div>
+        <div class="body">
+          <div class="kicker">Library</div>
+          <p class="title">Your music</p>
+          <div class="cta">
+            <p>Catalog search works with a developer key. Library, Listen Now, and likes wait on Connect Apple Music.</p>
+            <span class="btn">Connect Apple Music</span>
+          </div>
+        </div>
+        <div class="transport">
+          <div class="art"></div>
+          <div class="meta">Nothing playing<small>Transport is inert until playback PRs</small></div>
+          <div class="controls"><span class="play">play</span></div>
+        </div>
+      </div>
+    </figure>
+
+    <figure>
+      <figcaption>4. Settings <span>never writes Hyprland config</span></figcaption>
+      <div class="player">
+        <div class="side">
+          <div class="nav">Listen Now</div>
+          <div class="nav">Library</div>
+          <div class="nav">Search</div>
+          <div class="nav">Queue</div>
+          <div class="nav on">Settings</div>
+        </div>
+        <div class="body">
+          <div class="kicker">Settings</div>
+          <p class="title">OmaApple</p>
+          <div class="warn">Two Apple Music Chromiums are running. OmaApple will not disable the other plugin.</div>
+          <div class="setting"><span>MusicKit key</span><b>Import .p8 / paste PEM</b></div>
+          <div class="setting"><span>Reconnect</span><b>Authorize again</b></div>
+          <div class="setting"><span>Keyboard shortcut opens</span><b>Omarchy Music app</b></div>
+          <div class="setting"><span>Playback origin</span><b>chromium-apple-origin</b></div>
+          <div class="setting"><span>Sleep empty player</span><b>15 minutes</b></div>
+        </div>
+        <div class="transport">
+          <div class="art"></div>
+          <div class="meta">Snippet is copy-paste only<small>Super+Shift+M stays user-owned</small></div>
+          <div class="controls"><span class="play">play</span></div>
+        </div>
+      </div>
+    </figure>
+
+    <figure>
+      <figcaption>5. Search <span>works with REST JWT only, no authorize</span></figcaption>
+      <div class="player">
+        <div class="side">
+          <div class="nav">Listen Now</div>
+          <div class="nav">Library</div>
+          <div class="nav on">Search</div>
+          <div class="nav">Queue</div>
+          <div class="nav">Settings</div>
+        </div>
+        <div class="body">
+          <div class="kicker">Search</div>
+          <div class="field">Search songs, albums, artists…</div>
+          <div class="tabs">
+            <span class="tab on">Songs</span>
+            <span class="tab">Albums</span>
+            <span class="tab">Artists</span>
+            <span class="tab">Playlists</span>
+          </div>
+          <div class="row"><div class="art"></div><div class="meta">Catalog hit<small>Artist</small></div><div class="time">play</div></div>
+          <div class="row"><div class="art"></div><div class="meta">Catalog hit<small>Artist</small></div><div class="time">play</div></div>
+        </div>
+        <div class="transport">
+          <div class="art"></div>
+          <div class="meta">Play uses catalog ids only<small>Library rows resolve before load</small></div>
+          <div class="controls"><span class="play">play</span></div>
+        </div>
+      </div>
+    </figure>
+
+    <figure>
+      <figcaption>6. Now playing <span>Alt+Shift+N · art, title, scrubber</span></figcaption>
+      <div class="now">
+        <div class="card">
+          <div class="cover"></div>
+          <div class="meta">Track title<small>Artist</small></div>
+          <div class="scrub" style="width:220px;margin:14px auto 0;"><i></i></div>
+        </div>
+      </div>
+    </figure>
+  </div>
+
+  <p class="keys">
+    Keyboard (v1): <code>Ctrl+F</code> search · <code>Tab</code> cycle regions ·
+    <code>Space</code> play/pause · <code>Ctrl+←/→</code> prev/next ·
+    <code>Shift+←/→</code> seek · <code>Ctrl+↑/↓</code> volume ·
+    <code>Ctrl+S / Ctrl+R</code> shuffle / repeat · <code>Esc</code> close.
+    Queue is a sidebar page, same chrome as Listen Now.
+  </p>
+</body>
+</html>
